@@ -1,22 +1,27 @@
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import useFetch from '../hooks/useFetch';
 import dataContext from './MyContext';
 
 function Provider({ children }) {
+  const { response, loading } = useFetch();
   const [data, setData] = useState([]);
 
-  const makeFetch = async () => {
-    const api = await fetch('https://swapi-trybe.herokuapp.com/api/planets/');
-    const jsonRequest = await api.json();
-    const jsonResults = jsonRequest.results.filter((item) => delete item.residents);
-    setData(jsonResults);
-  };
+  const filterByName = ({ target: { value } }) => (
+    value !== '' ? (
+      setData(response.filter((item) => item.name.includes(value)))
+    ) : (
+      setData(response)
+    )
+  );
 
   useEffect(() => {
-    makeFetch();
-  }, []);
+    if (response) {
+      setData(response);
+    }
+  }, [response]);
 
-  const finishRequestApi = { data };
+  const finishRequestApi = { loading, data, filterByName };
 
   return (
     <dataContext.Provider value={ finishRequestApi }>
