@@ -14,7 +14,7 @@ export default function Table() {
             <tr>
               {data.length ? (
                 Object.keys(data[0]).map((element, i) => (
-                  <th key={ i }>{element.replace('_', ' ')}</th>
+                  <th key={ i }>{element}</th>
                 ))
               ) : (
                 <p>O que você procurou não existe</p>
