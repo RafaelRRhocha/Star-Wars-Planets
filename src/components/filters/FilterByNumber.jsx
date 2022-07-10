@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import dataContext from '../../context/MyContext';
 
 export default function FilterByNumber() {
-  const { filterByNumberInfos } = useContext(dataContext);
+  const { options, filterByNumberInfos } = useContext(dataContext);
   const [infos, setInfos] = useState({
     coluna: 'population',
     operador: 'maior que',
@@ -23,11 +23,9 @@ export default function FilterByNumber() {
           onChange={ onInputChange }
           data-testid="column-filter"
         >
-          <option>population</option>
-          <option>orbital_period</option>
-          <option>diameter</option>
-          <option>rotation_period</option>
-          <option>surface_water</option>
+          {options.map((setOptions) => (
+            <option key={ setOptions }>{ setOptions }</option>
+          )) }
         </select>
         <select
           name="operador"
@@ -51,7 +49,7 @@ export default function FilterByNumber() {
         />
         <button
           type="button"
-          onClick={ () => filterByNumberInfos(infos) }
+          onClick={ () => filterByNumberInfos(infos, setInfos) }
           data-testid="button-filter"
         >
           Filtrar

@@ -6,29 +6,42 @@ import dataContext from './MyContext';
 function Provider({ children }) {
   const { response, loading } = useFetch();
   const [data, setData] = useState([]);
+  const [options, setOptions] = useState([
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ]);
 
   const filterByName = (value) => (value === ''
     ? setData(response)
     : setData(response.filter((item) => item.name.includes(value))));
 
-  const filterByNumberInfos = (value) => (value.coluna === 'population'
+  const filterByNumberInfos = (value, setInfosFunc) => (value.coluna === 'population'
     && value.operador === 'maior que'
     && value.input === 0
     ? setData(response.filter((item) => item.population !== 'unknown'))
-    : setData(
+    : (setData(
       data.filter((item) => {
+        if (value.operador === 'igual a') {
+          return Number(item[value.coluna]) === Number(value.input);
+        }
         if (value.operador === 'maior que') {
           return Number(item[value.coluna]) > Number(value.input);
         }
         if (value.operador === 'menor que') {
           return Number(item[value.coluna]) < Number(value.input);
         }
-        if (value.operador === 'igual a') {
-          return Number(item[value.coluna]) === Number(value.input);
-        }
         return null;
       }),
-    ));
+    ),
+    setOptions(options.filter((coluna) => coluna !== value.coluna)),
+    setInfosFunc({
+      coluna: 'population',
+      operador: 'maior que',
+      input: 0,
+    })));
 
   useEffect(() => {
     if (response) {
@@ -36,7 +49,13 @@ function Provider({ children }) {
     }
   }, [response]);
 
-  const finishRequestApi = { loading, data, filterByNumberInfos, filterByName };
+  const finishRequestApi = {
+    loading,
+    data,
+    options,
+    filterByNumberInfos,
+    filterByName,
+  };
 
   return (
     <dataContext.Provider value={ finishRequestApi }>

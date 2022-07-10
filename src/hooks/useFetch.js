@@ -12,9 +12,7 @@ const useFetch = () => {
   };
 
   useEffect(() => {
-    if (makeFetch()) {
-      return makeFetch();
-    }
+    makeFetch();
   }, []);
   return { response, loading };
 };
