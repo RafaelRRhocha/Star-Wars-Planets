@@ -6,6 +6,7 @@ import dataContext from './MyContext';
 function Provider({ children }) {
   const { response, loading } = useFetch();
   const [data, setData] = useState([]);
+  const [infosState, setInfosState] = useState([]);
   const [options, setOptions] = useState([
     'population',
     'orbital_period',
@@ -21,7 +22,9 @@ function Provider({ children }) {
   const filterByNumberInfos = (value, setInfosFunc) => (value.coluna === 'population'
     && value.operador === 'maior que'
     && value.input === 0
-    ? setData(response.filter((item) => item.population !== 'unknown'))
+    ? (
+      setData(response.filter((item) => item.population !== 'unknown'))
+    )
     : (setData(
       data.filter((item) => {
         if (value.operador === 'igual a') {
@@ -43,6 +46,11 @@ function Provider({ children }) {
       input: 0,
     })));
 
+  const removeFilters = (value, prev = [...options]) => {
+    const setNewValue = value && prev.filter((arr) => arr.coluna !== value);
+    setOptions([...prev, setNewValue]);
+  };
+
   useEffect(() => {
     if (response) {
       setData(response);
@@ -55,6 +63,9 @@ function Provider({ children }) {
     options,
     filterByNumberInfos,
     filterByName,
+    infosState,
+    setInfosState,
+    removeFilters,
   };
 
   return (

@@ -5,7 +5,7 @@ import FilterName from './filters/FilterNameInput';
 export default function Header() {
   return (
     <header>
-      <div>
+      <div className="flex items-center gap-4 p-4">
         <FilterName />
         <FilterByNumber />
       </div>

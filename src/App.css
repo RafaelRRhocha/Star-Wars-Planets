@@ -1,41 +1,63 @@
-.App {
-  text-align: center;
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap') ;
+
+::-webkit-scrollbar {
+  width: 12px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+::-webkit-scrollbar-track {
+  background: black;
 }
 
-@media ( prefers-reduced-motion : no-preference ) {
-
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+::-webkit-scrollbar-thumb {
+  background-color: #191818;
+  border: 3px solid black;
+  border-radius: 20px;
 }
 
-.App-header {
-  align-items: center;
-  background-color: #282c34;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  font-size: calc(10px + 2vmin);
-  justify-content: center;
-  min-height: 100vh;
+:root {
+
+  --background: white;
+
+  --inputsAndTable: #e0e094;
+
+  --tableTD: beige;
+
+  --white: #191818;
+
 }
 
-.App-link {
-  color: #61dafb;
+.ligth-mode:root {
+
+  --background: #191818;
+
+  --inputsAndTable: #242933;
+
+  --tableTD: #2a303c;
+
+  --white: white;
+
 }
 
-@keyframes App-logo-spin {
+::-webkit-scrollbar-thumb:horizontal {
+  background-color: #191818;
+  border: 3px solid black;
+  border-radius: 20px;
+}
 
-  from {
-    transform: rotate(0deg);
-  }
+body {
+  background-color: var(--background);
+  color: var(--white);
+  font-family: Source Sans , sans-serif;
+}
 
-  to {
-    transform: rotate(360deg);
-  }
+.bg-cover {
+  mask-image: linear-gradient(to bottom, #191818 10%, transparent 90%);
+}
+
+.bkgInputs {
+  background-color: var(--inputsAndTable);
+}
+
+.bkgInputs td {
+  background-color: var(--tableTD);
 }
