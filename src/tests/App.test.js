@@ -20,9 +20,11 @@ describe('Teste da Página Table', () => {
     cleanup();
   });
 
-  it('Teste se a Api é Chamada Corretamente e Todos os itens estão presentes', async () => {
-    expect(fetch).toHaveBeenCalled();
-    expect(await screen.findAllByRole('row')).toHaveLength(11);
+  it('Teste se o Filtro nos Valores Iniciais Funciona Corretamente', async () => {
+    const buttonFilter = screen.getByTestId('button-filter');
+    userEvent.click(buttonFilter);
+
+    expect(await screen.findAllByRole('row')).toHaveLength(9);
   });
 
   it('Teste se o Filtro Igual a === Funciona Corretamente', async () => {
@@ -35,6 +37,9 @@ describe('Teste da Página Table', () => {
     userEvent.click(buttonFilter);
 
     expect(screen.getByText(/0/i)).toBeInTheDocument();
+
+    const buttonRemoveFilters = screen.getByTestId('remove-filters');
+    userEvent.click(buttonRemoveFilters);
   });
 
   it('Teste se o Filtro Maior Que > Funciona Corretamente', async () => {
@@ -47,6 +52,9 @@ describe('Teste da Página Table', () => {
     userEvent.click(buttonFilter);
 
     expect(await screen.findAllByRole('row')).toHaveLength(7);
+
+    const buttonRemoveFilters = screen.getByTestId('remove-filters');
+    userEvent.click(buttonRemoveFilters);
   });
 
   it('Teste se o Filtro Menor Que < Funciona Corretamente', async () => {
@@ -59,12 +67,39 @@ describe('Teste da Página Table', () => {
     userEvent.click(buttonFilter);
 
     expect(await screen.findAllByRole('row')).toHaveLength(3);
-  });
 
+    const buttonRemoveFilters = screen.getByTestId('remove-filters');
+    userEvent.click(buttonRemoveFilters);
+  });
 
   it('Teste a mudança de filtros', async () => {
     const filtro = screen.getByTestId(/name-filter/i);
     userEvent.type(filtro, 'oo');
     expect(await screen.findAllByRole('row')).toHaveLength(3);
+  });
+
+  it('Teste se Remove Todos os Filtros', async () => {
+    fireEvent.change(screen.getByTestId('comparison-filter'), { target: { value: "maior que"} });
+
+    const filterNumber = screen.getByTestId(/value-filter/i);
+    userEvent.type(filterNumber, '1000000');
+
+    const buttonFilter = screen.getByTestId(/button-filter/i);
+    userEvent.click(buttonFilter);
+
+    expect(await screen.findAllByRole('row')).toHaveLength(7);
+
+    fireEvent.change(screen.getByTestId('comparison-filter'), { target: { value: "menor que"} });
+
+    userEvent.type(filterNumber, '1000000');
+
+    userEvent.click(buttonFilter);
+
+    expect(await screen.findAllByRole('row')).toHaveLength(1);
+
+    const buttonRemoveFilters = screen.getByTestId('button-remove-filters');
+    userEvent.click(buttonRemoveFilters);
+
+    expect(await screen.findAllByRole('row')).toHaveLength(11);
   });
 });

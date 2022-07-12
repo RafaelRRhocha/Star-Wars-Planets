@@ -33,10 +33,7 @@ function Provider({ children }) {
         if (value.operador === 'maior que') {
           return Number(item[value.coluna]) > Number(value.input);
         }
-        if (value.operador === 'menor que') {
-          return Number(item[value.coluna]) < Number(value.input);
-        }
-        return null;
+        return Number(item[value.coluna]) < Number(value.input);
       }),
     ),
     setOptions(options.filter((coluna) => coluna !== value.coluna)),
@@ -46,9 +43,26 @@ function Provider({ children }) {
       input: 0,
     })));
 
-  const removeFilters = (value, prev = [...options]) => {
-    const setNewValue = value && prev.filter((arr) => arr.coluna !== value);
-    setOptions([...prev, setNewValue]);
+  const removeFilters = (value) => {
+    setData(response);
+    setOptions([...options, value]);
+    const setNewFilter = infosState.filter((e) => e.coluna !== value);
+    setInfosState(setNewFilter);
+    setNewFilter.forEach((e) => {
+      filterByNumberInfos(e);
+    });
+  };
+
+  const removeAllFilters = () => {
+    setInfosState([]);
+    setData(response);
+    setOptions([
+      'population',
+      'orbital_period',
+      'diameter',
+      'rotation_period',
+      'surface_water',
+    ]);
   };
 
   useEffect(() => {
@@ -66,6 +80,7 @@ function Provider({ children }) {
     infosState,
     setInfosState,
     removeFilters,
+    removeAllFilters,
   };
 
   return (

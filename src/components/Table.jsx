@@ -31,6 +31,7 @@ export default function Table() {
                     <td data-testid="planet-name">{e.name}</td>
                     <td>{e.rotation_period}</td>
                     <td>{e.orbital_period}</td>
+                    <td>{e.diameter}</td>
                     <td>{e.climate}</td>
                     <td>{e.gravity}</td>
                     <td>{e.terrain}</td>
